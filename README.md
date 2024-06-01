@@ -125,37 +125,50 @@ Set two environment variables: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, 
 ![alt text](images/19.22.png)
 
 
-# lets start building images
-    - go to the directory you have the packer file i.e PBL 19
-        - packer init . 
-# if we have only 1 packer file in the folder, if it's more than it will throw error of duplicate. you can leave it and go to the next step
-        # we want to build bastion first
-        - packer build .\bastion.pkr.hcl
-    - it was giving this error
-   ![alt text](images/19.19.png)
-# I resolved it by running this command : packer plugins install github.com/hashicorp/amazon
-   - i encountered another error
-   ![alt text](images/19.23.png)
-# i resolved it by changing the RHEL to RHEL-8.6.0_HVM-20220503-x86_64-2-Hourly2-GP2
-# i encountered another error that the subnet was not specified
-# i change the region from eu-west-2 to us-west-2
-![alt text](images/19.24.png)
+### lets start building images
+- go to the directory you have the packer file i.e PBL 19
+- packer init .
+```
+packer init .
+``` 
+> [!NOTE]
+> If we have only 1 packer file in the folder, if it's more than it will throw error of duplicate. you can leave it and go to the next step
+- we want to build bastion first
+```  
+packer build .\bastion.pkr.hcl
+```
+- it was giving this error
 
-    - packer build for nginx
+![alt text](images/19.19.png)
+
+> [!NOTE] 
+> I resolved it by running this command : packer plugins install github.com/hashicorp/amazon
+> i encountered another error
+> ![alt text](images/19.23.png)
+> i resolved it by changing the RHEL to RHEL-8.6.0_HVM-20220503-x86_64-2-Hourly2-GP2
+> i encountered another error that the subnet was not specified
+> i change the region from eu-west-2 to us-west-2
+> ![alt text](images/19.24.png)
+
+- packer build for nginx
+
 ![alt text](images/19.26.png)
 
-    - packer build for web
- ![alt text](images/19.25.png)
+- packer build for web
 
-    - packer build for ubuntu
-    - i encountered this error when building the ubuntu AMI
+![alt text](images/19.25.png)
+
+- packer build for ubuntu
+- i encountered this error when building the ubuntu AMI
 ![alt text](images/19.27.png)
-    - I was able to resolve it by changing the ami to this: 
-    "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20240228"
-    owners      = ["099720109477"]
-    ![alt text](images/19.28.png)
+> [!NOTE]
+> I was able to resolve it by changing the ami to this: 
+> "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20240228"
+>  owners      = ["099720109477"]
+>   ![alt text](images/19.28.png)
 
 - All the AMIs after created successfully
+
 ![alt text](images/19.29.png)
 
 # The next step is to copy the ami id and put them accordingly in our terrafor.auto.tvars
