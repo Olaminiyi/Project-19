@@ -228,7 +228,7 @@ aws iam list-instance-profiles
 ```
 aws iam delete-instance-profile --instance-profile-name aws_instance_profile_test  
 ```   
-![alt text](images/19.37.png)
+> ![alt text](images/19.37.png)
 
 **I created another run and apply and it was succesful**
 
