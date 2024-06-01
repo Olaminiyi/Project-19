@@ -247,124 +247,162 @@ aws iam delete-instance-profile --instance-profile-name aws_instance_profile_tes
 
 ![alt text](images/19.43.png)
 
-- checking our target gropus, i expect them to fail health check because they have not been configured the instances like: installing apache, fixing the path for the health check 
+checking our target gropus, i expect them to fail health check because they have not been configured the instances like: installing apache, fixing the path for the health check.
+
 ![alt text](images/19.44.png)
+
 ![alt text](images/19.45.png)
 
-- There are 2 ways to do it, we can either deregisterd the target group or do it in the terraform code
-- The first to do is to remove those instance as listener to the load balancer. This is because the target group as been designed as a listener to the load balancer and as a result of it the load balancer will forward traffick to them.
+There are two ways to do it, we can either `deregisterd` the target group or do it in the `terraform code`.The first to do is to remove those `instance` as `listener` to the `load balancer`. This is because the `target group` as been designed as a `listener` to the `load balancer` and as a result of it the `load balancer` will `forward traffick` to them.
 So we are going to comment them out first from our code
+
 ![alt text](images/19.46.png)
+
 ![alt text](images/19.47.png)
+
 ![alt text](images/19.47.png)
+
 ![alt text](images/19.48.png)
 
-- secondly, we will go into the autoscaling group, we know the autoscalling group are attach to the load balancer. so that the autoscaling group will not spin up another EC2 instance, so we are going to comment out the autoscalling group attachmnet for (nginx, wordpress and tooling)
+Secondly, we will go into the `autoscaling group`, we know the **autoscalling group are attach to the load balancer**. so that the autoscaling group will not spin up another EC2 instance, so we are going to comment out the autoscalling group attachmnet for (nginx, wordpress and tooling)
+
 ![alt text](images/19.49.png)
+
 ![alt text](images/19.50.png)
+
 ![alt text](images/19.51.png)
 
-- commit the changes and push to git
+Commit the changes and push to git
+
 ![alt text](images/19.52.png)
+
 ![alt text](images/19.53.png)
 
-# The next step is to update the ansible script with values from terraform output
-    - RDS endpoints for wordpress and tooling
-    - Database name, password and username for tooling and wordpress
-    - Access points ID for tooling and wordpress
-    - internal load balancer DNS for nginx reverse proxy
+### The next step is to update the ansible script with values from terraform output
+- RDS endpoints for wordpress and tooling
+- Database name, password and username for tooling and wordpress
+- Access points ID for tooling and wordpress
+- internal load balancer DNS for nginx reverse proxy
 
-- to achieve the step listed above, we login to our bastion host, clone done the ansible script and make our changes.
-    - add the pem key to your terminal
-    ![alt text](images/19.54.png)
+To achieve the step listed above, we login to our bastion host, clone done the ansible script and make our changes.
+- add the pem key to your terminal
 
-    - go to instances on AWS console and copy the public ip of the baston
-    - add it to the remote ssh configuration on the vscode
-    ![alt text](images/19.55.png)
+![alt text](images/19.54.png)
+
+- go to instances on AWS console and copy the public ip of the baston
+- add it to the remote ssh configuration on the vscode
+
+![alt text](images/19.55.png)
     
-    - ssh to the bastion server
-    - to confirm that our forward agent works ; open a terminal and type this command
-        ssh-add -l
-        ![alt text](images/19.56.png)
-    - by default because we have added our keypair to the keychain, the ssh agent bring it into the server but does not store it on the server
+- ssh to the bastion server
+- to confirm that our forward agent works ; open a terminal and type this command
+```
+ssh-add -l
+```
+![alt text](images/19.56.png)
 
-    - from our AMI we installed AWS CLI, let check if it was installed with this command
-        aws
-    - it was installed
-    ![alt text](images/19.57.png)
+By default because we have added our `keypair` to the `keychain`, the `ssh agent` bring it into the server but does not store it on the server.
 
-    - clone ansible folder from gitlab
-        git clone https://gitlab.com/olaiyaolaminiyi/ansible-deploy-pbl-19.git
+From our AMI we installed AWS CLI, let check if it was installed with this command
+```
+aws
+```
+It was installed
 
-    - Ansible is going to need to connect to our AWS account to pull the private ip addresses of the instances that was we used the dynamic inventory inside the "aws_ec2.yml"
-    - so we need to give ansible our secret and access key also
-    - so we do aws configure also on our bastion and set the access and secret key
-    ![alt text](images/19.58.png)
+![alt text](images/19.57.png)
 
-    - let's test it by checking for the s3 on the AWS
-       ![alt text](images/19.59.png) 
+Clone ansible folder from gitlab
+```  
+git clone https://gitlab.com/olaiyaolaminiyi/ansible-deploy-pbl-19.git
+```
+`Ansible` is going to need to connect to our `AWS account` to pull the `private ip addresses` of the instances that was we used the [dynamic inventory](https://docs.ansible.com/ansible/latest/collections/amazon/aws/docsite/aws_ec2_guide.html) inside the `aws_ec2.yml`.
 
- # copy the rds endpoint for wordpress and tooling
-    - go to the RDS on the AWS console
-    - click on databases > click on terraform created database
-    copy the RDS endpoint
+We need to give ansible our secret and access key also. so we do aws configure also on our bastion and set the `access` and `secret key`.
+```
+aws configure
+```
+
+![alt text](images/19.58.png)
+
+let's test it by checking for the s3 on the AWS
+
+![alt text](images/19.59.png) 
+
+### copy the rds endpoint for wordpress and tooling
+- go to the RDS on the AWS console
+- click on databases > click on terraform created database
+- copy the RDS endpoint
+
 ![alt text](images/19.60.png)
 
 - go to the ansible file > roles > tooling > tasks > setup-db.yml
 - update the terraform endpoint in the creating database task and Input tooling credentials task with: 
-    terraform-20240317221301736400000009.cr2aami6gg0r.us-west-2.rds.amazonaws.com
+`terraform-20240317221301736400000009.cr2aami6gg0r.us-west-2.rds.amazonaws.com`
+
 ![alt text](images/19.63.png)
 
- go to the ansible file > roles > wordpress > tasks > setup-db.yml
+- go to the ansible file > roles > wordpress > tasks > setup-db.yml
 - update the terraform endpoint in the creating database task and Input wordpress credentials task with: 
-    terraform-20240317221301736400000009.cr2aami6gg0r.us-west-2.rds.amazonaws.com
+`terraform-20240317221301736400000009.cr2aami6gg0r.us-west-2.rds.amazonaws.com`
+
 ![alt text](images/19.64.png)
 
-# copy the DNS name for the internal load balancer
+### Copy the DNS name for the internal load balancer
 - go to load balancer > select the ialb(internal load balance)
 - copy the DNS name
+
 ![alt text](images/19.61.png)
+
 - go to the ansible file > roles > nginx > template > nginx.confi.j2
 - update the dns name for the load balancer
+
 ![alt text](images/19.62.png)
 
-# The next step is to update file system ID and Access points ID for tooling and wordpress
+### The next step is to update file system ID and Access points ID for tooling and wordpress
 
 - go to EFS on AWS console > access point
 - click on the wordpress > click attach 
+
 ![alt text](images/19.65.png)
 
--  copy the fsap part first
+- copy the fsap part first
+
 ![alt text](images/19.66.png)
 
 - go to the ansible file > roles > tooling > tasks > main.yml 
-    - paste it to replace fsap part for opts
- ![alt text](images/19.67.png)   
+- paste it to replace `fsap` part for `opts`
 
-- copy the fs part and replace it with the src part
+![alt text](images/19.67.png)   
+
+- Copy the `fs` part and replace it with the `src` part
+
 ![alt text](images/19.68.png)
 
-- go to the ansible file > roles > wordpress > tasks > main.yml 
+- Go to the ansible file > roles > wordpress > tasks > main.yml 
+
 ![alt text](images/19.69.png)
 
-- we do the same thing for the wordpress
+- We do the same thing for the wordpress
+
 ![alt text](images/19.70.png)
+
 ![alt text](images/19.71.png)
+
 ![alt text](images/19.72.png)
+
 ![alt text](images/19.73.png)
+
 ![alt text](images/19.74.png)
 
-# install some required application on bastion
-
+### Install some required application on bastion
+```
 sudo dnf install python3-devel
-
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-
 sudo python3.11 get-pip.py
- 
 pip install botocore boto3
+```
 
-# update the ansible.cfg roles path
+### update the ansible.cfg roles path
 - open the ansible.cfg
 - copy the path of the role and update the roles path
 
