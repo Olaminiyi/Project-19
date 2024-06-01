@@ -235,6 +235,7 @@ aws iam delete-instance-profile --instance-profile-name aws_instance_profile_tes
 **I created another run and apply and it was succesful**
 
 ![alt text](images/19.38.png)
+
 ![alt text](images/19.39.png)
 
 **check the resources if they are created successfully on the AWS**
@@ -403,69 +404,160 @@ pip install botocore boto3
 ```
 
 ### update the ansible.cfg roles path
+
 - open the ansible.cfg
 - copy the path of the role and update the roles path
-
 - then copy and export the Ansible.cfg path for ansible to look at the path when running
-    - export ANSIBLE_CONFIG=/home/ec2-user/ansible-deploy-pbl-19/ansible.cfg
 
-# The next step is to run the ansible playbook to configure the instances
-    - we need to run the ansible inventory first to check if the dynamic inventory will be able to fetch our private IP addresses
-        ansible-inventory -i inventory/aws_ec2.yml --graph
+![alt text](images/19.76.png)
 
-    - we can run our ansible playbook now
-        ansible-playbook -i inventory/aws_ec2.yml playbooks/site.yml
+```
+export ANSIBLE_CONFIG=/home/ec2-user/ansible-deploy-pbl-19/ansible.cfg
+```
+![alt text](images/19.77.png)
 
+### The next step is to run the ansible playbook to configure the instances
 
-- ssh into the nginx server from our bastion server to check if it was properly configured
-    - check for the nginx status
-
-    - sudo vi /etc/nginx/nginx.conf
-
-- ssh into the tooling server from our bastion server to check if it was properly configured
-     - check if it was successfull mounted
-        df -h
-
-    - check if server is running
-        sudo systemctl status httpd 
-
-    - change to html
-     cd /var/www/html
-     ls
-
-    - check if the website is running locally
-    curl localhost
+We need to run the ansible inventory first to check if the dynamic inventory will be able to fetch our private IP addresses.
+```
+ansible-inventory -i inventory/aws_ec2.yml --graph
+```
+![alt text](images/19.78.png)
 
 
-    - ssh into the wordpress server from our bastion server to check if it was properly configured
-     - check if it was successfull mounted
-        df -h
-
-    - check if server is running
-        sudo systemctl status httpd 
-
-    - change to html
-     cd /var/www/html
-     ls
-
-    - check if the website is running locally
-    curl -v localhost
-
-    - There is an error with the database connection for wordpress
-    - configure it
-        sudo vi wp-config.php
-    
-    - ansible did not input the database name, username and password and hostname properly
-
-    - hostname is our terraform endpoint
-
-- the website is available locally now
-
-# now that our website are available locally let's go back to the terraform module and update our target group and autoscalling group
+We can run our ansible playbook now
+```
+ansible-playbook -i inventory/aws_ec2.yml playbooks/site.yml
+```
+![alt text](images/19.94.png)
+![alt text](images/19.95.png)
 
 
+**Check if the target groups are healthy**
 
-export PATH="$PATH:/usr/local/bin"
+![alt text](images/19.112.png)
+
+![alt text](images/19.113.png)
+
+![alt text](images/19.114.png)
+
+**Check the Listeners**
+
+![alt text](images/19.115.png)
+
+![alt text](images/19.116.png)
+
+![alt text](images/19.117.png)
+
+
+ssh into the nginx server from our bastion server to check if it was properly configured
+- check for the nginx status
+```
+sudo vi /etc/nginx/nginx.conf
+```
+![alt text](images/19.98.png)
+
+ssh into the tooling server from our bastion server to check if it was properly configured
+- check if it was successfull mounted
+```
+df -h
+```
+![alt text](images/19.99.png)
+
+Check if server is running
+``` 
+sudo systemctl status httpd 
+```
+![alt text](images/19.100.png)
+
+change directory to html
+```
+cd /var/www/html
+ls
+```
+
+![alt text](images/19.101.png)
+
+Check if the website is running locally
+```
+curl localhost
+```
+![alt text](images/19.102.png)
+
+ssh into the wordpress server from our bastion server to check if it was properly configured
+- check if it was successfull mounted
+```
+df -h
+```
+![alt text](images/19.103.png)
+
+check if server is running
+```
+sudo systemctl status httpd 
+```
+![alt text](images/19.104.png)
+
+Change directory to html
+```
+cd /var/www/html
+ls
+```
+![alt text](images/19.105.png)
+
+check if the website is running locally
+```
+curl -v localhost
+```
+![alt text](images/19.106.png)
+![alt text](images/19.107.png)
+
+> [!NOTE]
+> There is an error with the database connection for wordpress
+> configure it
+```  
+sudo vi wp-config.php
+```    
+> ansible did not input the database name, username and password and hostname properly.
+
+>![alt text](images/19.108.png)
+
+> **hostname is our terraform endpoint**.
+
+> ![alt text](images/19.109.png)
+
+The Wordpress is connected to the databse now. The website is available locally now
+
+![alt text](<images/Screenshot 2024-03-23 at 18.51.01.png>)
+
+We then go to the terraform script and uncomment the `auto scaling attachment` in the `asg-bastion-nginx.tf` and `asg-tooling-wordpress.tf` and also the `listeners` in the `alb.tf`.
+
+Push the updated terrform code to github. Terraform cloud picks up the changes, run a plan and apply.
+
+![alt text](images/19.110.png)
+
+![alt text](images/19.111.png)
+
+- Go to Route53
+- Under Records, copy hostnames for both tooling and wordpress respectively
+- paste the hostnames on the browser
+
+![alt text](<images/Screenshot 2024-03-23 at 19.26.52.png>)
+
+![alt text](<images/Screenshot 2024-03-23 at 19.27.16.png>)
+
+![alt text](<images/Screenshot 2024-03-23 at 19.27.48.png>)
+
+![alt text](<images/Screenshot 2024-03-23 at 19.28.18.png>)
+
+
+
+
+
+
+
+
+
+
 
 aws ec2 describe-availability-zones --region $REGION 
 
