@@ -167,65 +167,84 @@ packer build .\bastion.pkr.hcl
 >  owners      = ["099720109477"]
 >   ![alt text](images/19.28.png)
 
-- All the AMIs after created successfully
+All the AMIs after created successfully
 
 ![alt text](images/19.29.png)
 
-# The next step is to copy the ami id and put them accordingly in our terrafor.auto.tvars
+### The next step is to copy the ami id and put them accordingly in our terrafor.auto.tvars
+
 - go to the aws console > click on AMI > select each AMi and copy the AMI id
 - go to the terraform.auto.tvars and paste the copied AMIs
+
 ![alt text](images/19.30.png)
+
 ![alt text](images/19.31.png)
 
-- commit the changes and push it to the repo
-![alt text](<images/Screenshot 2024-03-05 at 19.35.03.png>)
+Commit the changes and push it to the repo
 
-# I encountered this errors
-![alt text](images/error.png)
-![alt text](images/error2.png)
-- The error was as a result of case sensitivity of the terraform cloud for the AWS access ID and Key
-- i deleted it and added it again in captital letter
+> [!WARNING] 
+> I encountered this errors
+> ![alt text](images/error2.png)
+> The error was as a result of case sensitivity of the terraform cloud for the AWS access ID and Key. I deleted it and added it again in captital letter
 
-# The next step is to check the plan carry out plan and apply just like using terraform on our local machine
-    - go to to terraform cloud workspace of your project
-    - from the side menu, click on RUN
-    - if their is no any "run" going on
-    - click on New run > Start
-    ![alt text](images/19.33.png)
+**The next step is to check the plan carry out plan and apply just like using terraform on our local machine**
+- go to to terraform cloud workspace of your project
+- from the side menu, click on RUN
+- if their is no any "run" going on
+- click on New run > Start
 
-    - the "run" created a successful plan
-    ![alt text](images/19.34.png)
+![alt text](images/19.33.png)
 
-    - scrow down and click on "confirm & apply"
-    ![alt text](images/19.35.png)
+The "run" created a successful plan
 
-- i encountered this error
-![alt text](images/error3.png)
-![alt text](images/error4.png)
+![alt text](images/19.34.png)
 
-- I checked the IAM console on the AWS, i checked under the roles and found that "ec2-instance-role" exist. This is as a result of my previous projects bearing the same name
--  I deleted it 
-![alt text](images/19.36.png)
+scrow down and click on "confirm & apply"
 
-- I created another run and apply to create the remaining resources and ran into another error
-    ![alt text](images/error5.png)
+![alt text](images/19.35.png)
 
-- I checked under the IAM console but it was not showing. I learnt that this type can persist on a system without showing under the IAM role
-- I used this command to check for the list of profiles on my AWS account
-     aws iam list-instance-profiles
-- it shows the profile exist
-- deleted it with this command 
-    aws iam delete-instance-profile --instance-profile-name aws_instance_profile_test  
-    ![alt text](images/19.37.png)
+> [!WARNING]
+> I encountered this error
 
-- I created another run and apply and it was succesful
+>![alt text](images/error3.png)
+>![alt text](images/error4.png)
+
+I checked the IAM console on the AWS, i checked under the roles and found that "ec2-instance-role" exist. This is as a result of my previous projects bearing the same name
+> [!NOTE]
+> I deleted it 
+
+> ![alt text](images/19.36.png)
+
+> [!IMPORTANT]
+> I created another run and apply to create the remaining resources and ran into another error
+
+> ![alt text](images/error5.png)
+
+> I checked under the IAM console but it was not showing. I learnt that this type can persist on a system without showing under the IAM role
+> I used this command to check for the list of profiles on my AWS account
+```
+aws iam list-instance-profiles
+```
+> It shows the profile exist
+> deleted it with this command 
+```
+aws iam delete-instance-profile --instance-profile-name aws_instance_profile_test  
+```   
+![alt text](images/19.37.png)
+
+**I created another run and apply and it was succesful**
+
 ![alt text](images/19.38.png)
 ![alt text](images/19.39.png)
 
-- check the resources if they are created successfully on the AWS
+**check the resources if they are created successfully on the AWS**
+
 ![alt text](images/19.40.png)
+
 ![alt text](images/19.41.png)
+
 ![alt text](images/19.42.png)
+
 ![alt text](images/19.43.png)
 
 - checking our target gropus, i expect them to fail health check because they have not been configured the instances like: installing apache, fixing the path for the health check 
