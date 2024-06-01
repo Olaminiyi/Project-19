@@ -217,9 +217,7 @@ I checked the IAM console on the AWS, i checked under the roles and found that "
 
 > [!IMPORTANT]
 > I created another run and apply to create the remaining resources and ran into another error
-
 > ![alt text](images/error5.png)
-
 > I checked under the IAM console but it was not showing. I learnt that this type can persist on a system without showing under the IAM role
 > I used this command to check for the list of profiles on my AWS account
 ```
