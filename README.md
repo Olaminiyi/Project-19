@@ -76,38 +76,52 @@ Let us explore how we can migrate our codes to Terraform Cloud and manage our AW
 
 ![alt text](images/19.9.png)
 
-        7. under set up provider 
-           enter the details in the "Application: Terraform cloud(Olami)" page into the corresponding field
-        ![alt text](images/19.10.png)
-        ![alt text](images/19.11.png)
-        > click Next
+- under set up provider 
+- Enter the details in the "Application: Terraform cloud(Olami)" page into the corresponding field
+   
+![alt text](images/19.10.png)
+    
+![alt text](images/19.11.png)
+    
+- > click Next
         
-        8. skip set up ssh keypair
-        ![alt text](images/19.12.png)
+- skip set up ssh keypair
+        
+![alt text](images/19.12.png)
 
-        9. under chose repository : chose PBL-project-19
-        ![alt text](images/19.13.png)
-        
-        10. Give the workspace a name and desription
-         ![alt text](images/19.14.png)
-        
-        11. under VCS trigger : make sure "always trigger run" and "automatic speculative plan" are selected
-        ![alt text](images/19.15.png)
-         > click Next
-        12. Configuration upload success
-         ![alt text](images/19.16.png)
-         ![alt text](images/19.17.png)
+- under chose repository : chose PBL-project-19
 
-# Configure variables
-Terraform Cloud supports two types of variables: environment variables and Terraform variables. Either type can be marked as sensitive, which prevents them from being displayed in the Terraform Cloud web UI and makes them write-only
+![alt text](images/19.13.png)
+        
+- Give the workspace a name and desription
+         
+![alt text](images/19.14.png)
+        
+- under VCS trigger : make sure "always trigger run" and "automatic speculative plan" are selected
+        
+![alt text](images/19.15.png)
+
+- > click Next
+  
+- Configuration upload success
+
+ ![alt text](images/19.16.png)
+
+![alt text](images/19.17.png)
+
+### Configure variables
+**Terraform Cloud** supports two types of variables: `environment variables` and `Terraform variables`. Either type can be marked as `sensitive`, which prevents them from being displayed in the Terraform Cloud web UI and makes them `write-only`
+
 - click on variables on the side bar menu 
-    ![alt text](images/19.18.png)
-- click add variable : it shows Terraform variable which makes use of the terraform auto.tfvars; and 
-  Environment variable which makes use of secret and access keys.
-  we can load our terraform auto.tfvars in the terraform variable but it can pick it automaticall from our project if we named the file(terraform.auto.tfvars)
 
-- Set two environment variables: AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY, set the values that you created for terraform
+![alt text](images/19.18.png)
+
+Click add variable : it shows Terraform variable which makes use of the terraform auto.tfvars; and Environment variable which makes use of secret and access keys. We can load our `terraform auto.tfvars` in the terraform variable but it can pick it automaticall from our project if we named the file(terraform.auto.tfvars)
+
+Set two environment variables: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, set the values that you created for terraform
+
 ![alt text](images/19.21.png)
+
 ![alt text](images/19.22.png)
 
 
