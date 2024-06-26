@@ -14,7 +14,7 @@ Instead of running the Terraform codes in [Project-18](https://github.com/Olamin
 
 **TASKS**
 
-- Build AMIs using Packer
+- Build AMIs using Packer.
 - Update the terraform script with the AMI IDs generated from packer build
 - Create terraform cloud and backend
 - Run terraform script
