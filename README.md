@@ -38,7 +38,7 @@ Instead of running the Terraform codes in [Project-18](https://github.com/Olamin
 ### Create a Terraform Cloud account
 
 Let us explore how we can migrate our codes to Terraform Cloud and manage our AWS infrastructure from there:
-- Create a Terraform Cloud account
+- Create a Terraform Cloud account.
 
 ![alt text](images/19.1.png)
 
