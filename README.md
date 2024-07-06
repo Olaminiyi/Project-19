@@ -132,7 +132,7 @@ Set two environment variables: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, 
 packer init .
 ``` 
 > [!NOTE]
-> If we have only 1 packer file in the folder, if it's more than it will throw error of duplicate. you can leave it and go to the next step
+> If we have only 1 packer file in the folder, if it's more than it will throw error of duplicate. you can leave it and go to the next step.
 - we want to build bastion first
 ```  
 packer build .\bastion.pkr.hcl
