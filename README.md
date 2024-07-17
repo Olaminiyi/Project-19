@@ -2,7 +2,7 @@
 
 In [Project-18](https://github.com/Olaminiyi/Project-18), I migrated the terraform.tfstate file to S3 bucket for easy collaboration amongst DevOps team mates in an organisation. I will be introducing [Terraform Cloud](https://developer.hashicorp.com/terraform/cloud-docs) to further automate the process.
 
-Clone this repo to your working directory, it contains the AMI scripts that we are going to build with packer [AMI](https://github.com/Olaminiyi/PBL-project-19/blob/main/AMI/nginx.pkr.hcl) 
+Clone this repo to your working directory, it contains the all the folders we use for this project [PBL 19](https://github.com/Olaminiyi/PBL-project-19) 
 
 This documentation provides a step-by-step guide on using Terraform Cloud, Ansible, and Packer together to provision infrastructure in AWS. Terraform is used for defining and managing infrastructure as code, Ansible for configuring servers, and Packer for building machine images. By combining these tools, you can automate the provisioning process and ensure consistent, reproducible infrastructure deployments.
 
